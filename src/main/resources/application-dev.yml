@@ -30,7 +30,3 @@ cors:
     - http://localhost
 jwt:
   secret: ${JWT_SECRET}
-lingosphinx:
-  gamification:
-    client:
-        url: ${GAMIFICATION_CLIENT_URL:http://localhost:8084}

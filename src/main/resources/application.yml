@@ -5,3 +5,7 @@ spring:
       active: dev
     jpa:
       open-in-view: false
+lingosphinx:
+  gamification:
+    client:
+      url: ${GAMIFICATION_CLIENT_URL:http://localhost:8084}
