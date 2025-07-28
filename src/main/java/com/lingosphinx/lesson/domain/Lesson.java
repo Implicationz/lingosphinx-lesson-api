@@ -1,7 +1,11 @@
 package com.lingosphinx.lesson.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Entity
@@ -9,10 +13,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Lesson {
+public class Lesson extends ContentItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne
@@ -20,12 +24,8 @@ public class Lesson {
 
     private int position;
 
-    private String title;
-    private String titleTranslation;
-    private String titleTranscription;
 
-
-    @OneToMany(mappedBy = "lesson_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Material> materials;
 
 }

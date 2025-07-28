@@ -1,6 +1,6 @@
 package com.lingosphinx.lesson.controller;
-import com.lingosphinx.lesson.dto.SubjectDto;
-import com.lingosphinx.lesson.service.SubjectService;
+import com.lingosphinx.lesson.dto.TopicDto;
+import com.lingosphinx.lesson.service.TopicService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,36 +11,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/subject")
+@RequestMapping("/topic")
 @RequiredArgsConstructor
-@Tag(name = "Subject API")
+@Tag(name = "Topic API")
 public class TopicController {
 
-    private final SubjectService subjectService;
+    private final TopicService topicService;
 
     @PostMapping
-    public ResponseEntity<SubjectDto> create(@RequestBody @Valid SubjectDto subject) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(subjectService.create(subject));
+    public ResponseEntity<TopicDto> create(@RequestBody @Valid TopicDto topic) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(topicService.create(topic));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SubjectDto> readById(@PathVariable Long id) {
-        return ResponseEntity.ok(subjectService.readById(id));
+    public ResponseEntity<TopicDto> readById(@PathVariable Long id) {
+        return ResponseEntity.ok(topicService.readById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<SubjectDto>> readAll() {
-        return ResponseEntity.ok(subjectService.readAll());
+    public ResponseEntity<List<TopicDto>> readAll() {
+        return ResponseEntity.ok(topicService.readAll());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SubjectDto> update(@PathVariable Long id, @RequestBody @Valid SubjectDto subject) {
-        return ResponseEntity.ok(subjectService.update(id, subject));
+    public ResponseEntity<TopicDto> update(@PathVariable Long id, @RequestBody @Valid TopicDto topic) {
+        return ResponseEntity.ok(topicService.update(id, topic));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        subjectService.delete(id);
+        topicService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

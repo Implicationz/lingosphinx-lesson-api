@@ -1,7 +1,13 @@
 package com.lingosphinx.lesson.repository;
 
 import com.lingosphinx.lesson.domain.Course;
-import com.lingosphinx.lesson.domain.Topic;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CourseRepository extends JpaRepository<Course, Long> {}
+import java.util.Optional;
+
+public interface CourseRepository extends JpaRepository<Course, Long> {
+    @EntityGraph(attributePaths = {"subject", "topic", "units"})
+    @Override
+    Optional<Course> findById(Long id);
+}

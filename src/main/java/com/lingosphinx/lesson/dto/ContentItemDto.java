@@ -1,13 +1,9 @@
 package com.lingosphinx.lesson.dto;
 
+import com.lingosphinx.lesson.domain.LanguageCode;
 import com.lingosphinx.lesson.domain.LessonDifficulty;
-import com.lingosphinx.lesson.domain.LessonType;
 import com.lingosphinx.lesson.domain.Visibility;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +11,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class ContentItemDto {
-    private LessonType type;
+
+    private String title;
+    private String titleTranslation;
+    private String titleTranscription;
+
+    private SubjectDto subject;
+    private TopicDto topic;
+    private LanguageCode language;
+    private LessonTypeDto type;
     private LessonDifficulty difficulty;
     private Visibility visibility;
     private String ownerId;

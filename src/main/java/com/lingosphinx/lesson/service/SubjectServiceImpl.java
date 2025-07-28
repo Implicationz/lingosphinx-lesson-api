@@ -1,9 +1,9 @@
 package com.lingosphinx.lesson.service;
 
 import com.lingosphinx.lesson.dto.SubjectDto;
+import com.lingosphinx.lesson.exception.ResourceNotFoundException;
 import com.lingosphinx.lesson.mapper.SubjectMapper;
 import com.lingosphinx.lesson.repository.SubjectRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class SubjectServiceImpl implements SubjectService {
     @Transactional(readOnly = true)
     public SubjectDto readById(Long id) {
         var subject = subjectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Subject not found"));
         return subjectMapper.toDto(subject);
     }
 
@@ -43,10 +43,17 @@ public class SubjectServiceImpl implements SubjectService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<SubjectDto> readAll(String name) {
+        var subjects = subjectRepository.findByNameStartingWithIgnoreCase(name);
+        return subjects.stream().map(subjectMapper::toDto).toList();
+    }
+
     @Override
     public SubjectDto update(Long id, SubjectDto subjectDto) {
         var existingSubject = subjectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Subject not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Subject not found"));
 
         var savedSubject = subjectRepository.save(existingSubject);
         return subjectMapper.toDto(savedSubject);

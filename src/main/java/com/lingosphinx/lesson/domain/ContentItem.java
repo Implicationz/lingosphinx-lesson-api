@@ -1,7 +1,9 @@
 package com.lingosphinx.lesson.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @MappedSuperclass
 @Data
@@ -9,14 +11,29 @@ import lombok.*;
 @AllArgsConstructor
 public abstract class ContentItem {
 
-    @Enumerated(EnumType.STRING)
+    private String title;
+    private String titleTranslation;
+    private String titleTranscription;
+
+    @ManyToOne
+    private Subject subject;
+    @ManyToOne
+    private Topic topic;
+
+    @Column(nullable = false)
+    private LanguageCode language;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private LessonType type;
 
-    @Enumerated(EnumType.STRING)
-    private LessonDifficulty difficulty;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(nullable = false)
+    private LessonDifficulty difficulty = LessonDifficulty.A1;
 
     @Enumerated(EnumType.STRING)
-    private Visibility visibility;
+    @Column(nullable = false)
+    private Visibility visibility = Visibility.PRIVATE;
 
     private String ownerId;
 

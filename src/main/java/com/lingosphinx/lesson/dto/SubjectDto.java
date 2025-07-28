@@ -1,7 +1,5 @@
 package com.lingosphinx.lesson.dto;
 
-import com.lingosphinx.lesson.domain.LanguageCode;
-import jakarta.persistence.*;
 import lombok.*;
 
 @Getter @Setter
@@ -9,5 +7,4 @@ import lombok.*;
 public class SubjectDto {
     private Long id;
     private String name;
-    private LanguageCode language;
 }

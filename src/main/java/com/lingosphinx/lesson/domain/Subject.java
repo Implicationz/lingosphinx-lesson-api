@@ -9,12 +9,9 @@ import lombok.*;
 @NoArgsConstructor @AllArgsConstructor @Builder
 public class Subject {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String name;
-
-    @Column(nullable = false)
-    private LanguageCode language;
 }
