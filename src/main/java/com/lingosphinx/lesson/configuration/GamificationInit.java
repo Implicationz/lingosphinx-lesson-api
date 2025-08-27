@@ -1,5 +1,3 @@
-package com.lingosphinx.lesson.configuration;
-
 import com.lingosphinx.lesson.client.GamificationClient;
 import com.lingosphinx.lesson.configuration.LessonProperties;
 import com.lingosphinx.lesson.dto.GoalTypeDto;
@@ -9,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -28,25 +29,39 @@ public class GamificationInit {
     public void initGamification() {
         for (var lang : lessonProperties.getLanguages()) {
             try {
-                gamificationClient.createZone(new GoalZoneDto(lang));
+                createZoneWithRetry(new GoalZoneDto(lang));
+            } catch (FeignException.Conflict e) {
+                log.info("409 CONFLICT on createZone: {}", lang);
             } catch (Exception e) {
-                if (e instanceof FeignException.Conflict) {
-                    log.info("409 CONFLICT on createZone: {}", lang);
-                } else {
-                    throw e;
-                }
+                log.warn("Error on createZone für {}: {}", lang, e.toString());
             }
         }
         for (var type : TYPES) {
             try {
-                gamificationClient.createType(new GoalTypeDto(type));
+                createTypeWithRetry(new GoalTypeDto(type));
+            } catch (FeignException.Conflict e) {
+                log.info("409 CONFLICT on createType: {}", type);
             } catch (Exception e) {
-                if (e instanceof FeignException.Conflict) {
-                    log.info("409 CONFLICT on createType: {}", type);
-                } else {
-                    throw e;
-                }
+                log.warn("Error on createType für {}: {}", type, e.toString());
             }
         }
+    }
+
+    @Retryable(
+            value = {FeignException.TooManyRequests.class},
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 10_000, multiplier = 2)
+    )
+    public void createZoneWithRetry(GoalZoneDto dto) {
+        gamificationClient.createZone(dto);
+    }
+
+    @Retryable(
+            value = {FeignException.TooManyRequests.class},
+            maxAttempts = 5,
+            backoff = @Backoff(delay = 10_000, multiplier = 2)
+    )
+    public void createTypeWithRetry(GoalTypeDto dto) {
+        gamificationClient.createType(dto);
     }
 }
