@@ -1,4 +1,4 @@
-package com.lingosphinx.lesson.dto;
+package com.lingosphinx.gamification.dto;
 
 import lombok.Data;
 

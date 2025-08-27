@@ -8,4 +8,7 @@ spring:
 lingosphinx:
   gamification:
     client:
-      url: ${GAMIFICATION_CLIENT_URL:http://localhost:8084}
+      api-key: ${GAMIFICATION_API_KEY}
+      url: ${GAMIFICATION_CLIENT_URL}
+  lesson:
+    languages: en,de,fr,es,ru,ar-EG,zh

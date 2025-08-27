@@ -1,16 +1,19 @@
 package com.lingosphinx.lesson.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.lingosphinx.gamification.dto.GoalDto;
+import com.lingosphinx.lesson.dto.CarouselItem;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
-@Data
-@NoArgsConstructor
+@Setter
+@Getter
 @AllArgsConstructor
+@RequiredArgsConstructor
 @SuperBuilder
 public abstract class Carousel<T> {
-    protected List<T> items;
+    protected List<CarouselItem<T>> items;
 }
